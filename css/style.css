@@ -1,4 +1,4 @@
-/* SyncBreaker — Beta Styles */
+/* SyncBreaker — Modern Glassmorphism & Neon Styles */
 
 * {
     margin: 0;
@@ -7,22 +7,24 @@
 }
 
 :root {
-    --bg-dark: #0a0e17;
-    --bg-mid: #111827;
-    --accent: #3b82f6;
-    --accent-dim: rgba(59, 130, 246, 0.3);
+    --bg-dark: #040711;
+    --bg-mid: #0a0f1e;
+    --accent: #38bdf8;
+    --accent-blue: #3b82f6;
+    --accent-dim: rgba(56, 189, 248, 0.25);
     --success: #22c55e;
     --danger: #ef4444;
     --warning: #f59e0b;
-    --text: #e2e8f0;
-    --text-dim: #64748b;
-    --border: #1e293b;
+    --text: #f8fafc;
+    --text-dim: #94a3b8;
+    --glass-bg: rgba(15, 23, 42, 0.65);
+    --glass-border: rgba(255, 255, 255, 0.08);
     --font-display: 'Orbitron', monospace;
     --font-body: 'Rajdhani', sans-serif;
 }
 
 body {
-    background: var(--bg-dark);
+    background: radial-gradient(circle at 50% 35%, #0f172a 0%, #0a0f1e 45%, #040711 100%);
     overflow: hidden;
     width: 100vw;
     height: 100vh;
@@ -31,9 +33,29 @@ body {
     justify-content: center;
     font-family: var(--font-body);
     color: var(--text);
+    position: relative;
+}
+
+body::before {
+    content: '';
+    position: absolute;
+    width: 70vw;
+    height: 70vh;
+    background: radial-gradient(circle, rgba(56, 189, 248, 0.12) 0%, rgba(59, 130, 246, 0.06) 40%, transparent 72%);
+    filter: blur(48px);
+    pointer-events: none;
+    z-index: 0;
 }
 
 canvas {
+    position: relative;
+    z-index: 1;
     display: block;
     background: var(--bg-dark);
+    border-radius: 18px;
+    border: 1px solid var(--glass-border);
+    box-shadow:
+        0 25px 70px rgba(0, 0, 0, 0.75),
+        0 0 40px rgba(59, 130, 246, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }

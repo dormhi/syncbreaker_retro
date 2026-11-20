@@ -1,35 +1,85 @@
-# SyncBreaker 🌌
+# SyncBreaker Retro (Gemini Experimental Build)
 
-**SyncBreaker** is a browser-based, cyberpunk-themed defense game built as a **Computer Graphics Final Project**. The game focuses on fundamental graphics programming concepts—such as transformations, physics, particle systems, and rendering loops—built entirely from scratch using **Vanilla JavaScript** and the **HTML5 Canvas API** without any external game engines.
+> **Note:** This repository (`syncbreaker_retro`) is an experimental build created on top of the **initial prototype version of SyncBreaker** specifically to **test and evaluate Gemini models** on from-scratch UI design, custom 2D physics engine programming, and timing bar rendering.
+>
+> A much more advanced version of the game lives in the main repository: **[dormhi/syncbreaker](https://github.com/dormhi/syncbreaker)** ([Play Main Version](https://dormhi.github.io/syncbreaker/)).
 
-🔗 **[Play the Game Live](https://dormhi.github.io/syncbreaker/)**
+🔗 **[Play SyncBreaker Retro on GitHub Pages](https://dormhi.github.io/syncbreaker_retro/)**
 
-## 🎮 Gameplay
-You are tasked with defending a system against an active cyber attack. You must clean infected nodes and rebuild the firewall using two core mechanics:
-1. **Timing Bar (Main Defense):** Press `Space` (or tap the screen) right when the indicator hits the green target zone to successfully clean the node. As you progress, the speed increases and the target zone shrinks.
-2. **Code Breaker (Lockpick):** Bypass locked nodes by solving a dynamic radial mini-game. Press the corresponding `Arrow Keys` (or swipe `Up/Down/Left/Right` on mobile) when the rotating scanner aligns with the nodes.
+---
 
-## ✨ Features
-- **Object-Oriented Architecture:** Fully decoupled systems for UI, Game State, Energy Management, and Level configurations.
-- **Endless Mode:** Survive an infinite wave of attacks where difficulty progressively scales up.
-- **Energy & Progression System:** Energy depletes when taking shortcuts or reviving, and slowly regenerates over time (persists via `localStorage`).
-- **Mobile-Ready:** Fully supports touch interactions (Tap to shoot, Swipe to lockpick) for a seamless mobile experience.
+## 🧪 About This Experiment
 
-## 📐 Computer Graphics Concepts Implemented
-This project was designed to demonstrate core Computer Graphics principles:
-- **Transformations (Translation & Rotation):** Utilized `ctx.translate` and `ctx.rotate` to handle complex radial drawing and cursor animations.
-- **Trigonometric Velocity Vectors:** Calculated X and Y trajectory shifts for background particles using `Math.sin()` and `Math.cos()`.
-- **Coordinate Wrapping:** Seamlessly looping particles across the canvas boundaries to create an infinite background effect.
-- **Custom Render Pipeline:** Implemented a continuous `requestAnimationFrame` loop with Delta Time (`dt`) to decouple logic updates from the frame rate.
-- **Particle Systems:** Created a digital rain matrix effect and dynamic hit-sparks upon successful defense actions.
+Built using pure **Vanilla JavaScript** and the **HTML5 Canvas 2D API** (zero external engines or frameworks), this experiment explores how well Gemini models can design and implement three core pillars from scratch on top of the early SyncBreaker codebase:
 
-## 🛠 Installation & Running Locally
-No build tools or installations are required. 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/dormhi/syncbreaker.git
-   ```
-2. Open `index.html` in any modern browser or use a local extension like VS Code Live Server.
+1. **Modern Glassmorphism & Minimalist Neon UI** (`js/UIManager.js`, `css/style.css`)
+2. **Custom 2D Physics Engine** (`js/PhysicsEngine.js`)
+3. **Fluid Neon Light Capsule Timing Bar** (`js/LevelManager.js`, `js/LevelThemes.js`)
 
-## 🎓 About
-Developed as a Computer Graphics University Final Project.
+---
+
+## ✨ Key Implemented Features
+
+### ⚙️ 2D Physics Engine (`js/PhysicsEngine.js`)
+- **`Spring1D` & `Spring2D`**: Hooke's Law spring-damper oscillators (`stiffness`, `damping`, `mass`) integrated with semi-implicit Euler steps.
+- **`SliderPhysics`**: Timing bar cursor kinematics with smooth velocity acceleration, elastic boundary bounce (`0.92` reflection factor), squash-and-stretch springs (`squashX`, `squashY`), elastic end-bumper springs (`leftBumperSpring`, `rightBumperSpring`), and an 18-sample fluid motion trail.
+- **`WaveBarPhysics`**: A 48-node coupled 1D spring oscillator stretched across the timing bar that propagates kinetic ripples on hits, cursor motion, and wall bounces.
+- **`CameraPhysics`**: Directional spring recoil (`Spring2D`), rotational tilt (`angle`), and decaying `trauma` screen shake on impacts.
+- **`PhysicsWorld2D`**: Rigid-body glass/neon debris shard simulation (`gravity`, drag, angular velocity, and floor collision bounce with `restitution: 0.58`) alongside expanding neon shockwave rings.
+
+### 🪟 Glassmorphic Neon Interface (`js/UIManager.js`, `js/GameManager.js`, `js/LockpickSystem.js`)
+- Frosted translucent glass panels (`drawGlassPanel`) with specular top edge highlights, subtle inner color gradients, and moving ambient bokeh orbs for background depth.
+- Spring-animated glass buttons and node cards (`scaleSpring`, `hoverSpring`) with fiber-optic animated connection pulses in the Network Topology Hub.
+- Top HUD featuring `SYSTEM SCORE`, bouncing `COMBO` neon pills, and a 7-cell liquid-neon `ENERGY CORE` bar.
+- Redesigned radial **Code Breaker (Lockpick)** mini-game with a frosted glass dial, `25°` comet-trail scanner cursor, alignment flare, and spring-pulsing directional pills.
+
+### ⚡ Fluid Light Timing Bar (`js/LevelManager.js`)
+- Multi-layered frosted glass chassis with elastic neon end bumpers and scale ticks.
+- Recessed dark light track displaying the live 48-node `WaveBarPhysics` harmonic wave.
+- Spring-morphing target zone featuring an outer **Good** neon capsule and an inner **35% Perfect** core.
+- Vertical white-hot light-blade cursor with squash-and-stretch deformation, trailing neon ribbon, and floating themed icon micro-badge.
+
+---
+
+## 🎮 Controls & Gameplay
+
+- **Timing Bar (Main Defense):** Press `Space` (or **Tap** on mobile) when the light-blade cursor aligns inside the glowing neon target zone. Clean all 6 infected system nodes to unlock **Endless Mode**.
+- **Code Breaker (Lockpick / Recovery):** Press `Arrow Keys` / `WASD` (or **Swipe** Up/Down/Left/Right on mobile) when the rotating scanner aligns with each directional node.
+
+---
+
+## 🗂️ Project Structure
+
+```text
+.
+├── index.html             # Entry point (GitHub Pages ready)
+├── .nojekyll              # Disables Jekyll processing on GitHub Pages
+├── css/
+│   └── style.css          # Radial cyber-glass frame & canvas styling
+└── js/
+    ├── utils.js           # Math, easing & canvas rounded-rect helpers
+    ├── PhysicsEngine.js   # Custom 2D spring-damper, wave & debris physics
+    ├── EnergySystem.js    # Charge regeneration & localStorage persistence
+    ├── StateManager.js    # Finite state machine & screen transitions
+    ├── UIManager.js       # Glassmorphism primitives, spring buttons & HUD
+    ├── LockpickSystem.js  # Radial code breaker mini-game
+    ├── SoundManager.js    # Web Audio API oscillator synthesis & ambient audio
+    ├── LevelThemes.js     # Per-level neon palettes, icons & particles
+    ├── LevelManager.js    # Timing bar, level progression & endless waves
+    ├── GameManager.js     # Menu, Hub, bokeh background & input routing
+    └── main.js            # Responsive 960x640 canvas & requestAnimationFrame loop
+```
+
+---
+
+## 🛠️ Running Locally & GitHub Pages
+
+No build step or dependencies are required:
+
+```bash
+git clone https://github.com/dormhi/syncbreaker_retro.git
+cd syncbreaker_retro
+```
+
+Open `index.html` directly in your browser or serve with any static HTTP server (e.g., `python3 -m http.server 8000`).  
+For **GitHub Pages**, configure **Settings → Pages → Deploy from a branch** on `main` / `/ (root)`.
